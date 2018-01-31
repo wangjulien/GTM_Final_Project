@@ -1,0 +1,22 @@
+<div class="col-md-6 col-md-offset-3">
+
+    <form (ngSubmit)="auth()" #loginForm="ngForm" novalidate>
+        <div class="form-group">
+            <label for="login">Saisissez votre identifiant</label>
+            <input type="text" class="form-control" id="login" placeholder="Identifiant" required [(ngModel)]="model.login" name="login" #loginInput="ngModel"
+            />
+            <div [hidden]="loginInput.valid || loginInput.pristine" class="alert alert-danger">Un identifiant est requis</div>
+        </div>
+        <div class="form-group">
+            <label for="password">Saisissez votre mot de passe</label>
+            <input type="password" class="form-control" id="password" placeholder="Mot de passe" required [(ngModel)]="model.password" name="password"
+                #passwordInput="ngModel" />
+            <div [hidden]="passwordInput.valid || passwordInput.pristine" class="alert alert-danger">Un mot de passe est requis</div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">Se connecter</button>
+        </div>
+    </form>
+    
+</div>

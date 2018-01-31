@@ -1,0 +1,104 @@
+<div>
+	<a [routerLink]="['/gestion-client']">
+		<button type="button" class="btn btn-success">Retour</button>
+	</a>
+</div>
+
+
+<h3>Effectuer un virement :</h3>
+
+<form class="well" (ngSubmit)="onSubmit()" #virementForm='ngForm' ngNativeValidate>
+	<table>
+		<tr>
+			<td>
+				<div id="debiteur">
+					<table>
+						<tr>
+							<td>
+								<label for="debiteurselect">Sélectionner le client à débiter : </label>
+								<select class="form-control" name="debiteurselect" id="debiteurselect"
+								 (ngModelChange)="selectDebiteur($event)" (ngModel)="clientDebiteur">
+									<option *ngFor="let client of clients" [ngValue]="client">{{client.nom}} {{client.prenom}} ({{client.refClient}})</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="debcomptselect">Sélectionner le compte à débiter : </label>
+								<select class="form-control" name="debcomptselect" id="debcomptselect"
+								 (ngModelChange)="selectDepart($event)" (ngModel)="compteDepart">
+									<option *ngFor="let compte of departs" [ngValue]="compte">{{compte.numCompte}} (solde:{{compte.solde}})</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+			<td></td>
+			<td>
+				<div id="crediteur">
+					<table>
+						<tr>
+							<td>
+								<label for="crediteurselect">Sélectionner le client à créditer : </label>
+								<select class="form-control" name="crediteurselect" id="crediteurselect"
+								 (ngModelChange)="selectCrediteur($event)" (ngModel)="clientCrediteur">
+									<option *ngFor="let client of allClients" [ngValue]="client">{{client.nom}} {{client.prenom}} ({{client.refClient}})</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="crdcomptselect">Sélectionner le compte à créditer : </label>
+								<select class="form-control" name="crdcomptselect" id="crdcomptselect"
+								 (ngModelChange)="selectCible($event)" (ngModel)="compteCible">
+									<option *ngFor="let compte of cibles" [ngValue]="compte">{{compte.numCompte}} (solde:{{compte.solde}})
+									</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+
+		<tr>
+			<td></td>
+			<td>
+				<label for="montant">Indiquer le montant à virer : </label>
+				<input type="number" step="0.01" id="montant" name="montant" placeholder="Saisir le montant"
+				 [(ngModel)]='virement.montant' #montant='ngModel' /> €</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" value="Effectuer le virement" class="btn btn-primary" />
+			</td>
+			<td></td>
+		</tr>
+	</table>
+</form>
+<br>
+<table class="table table-bordered table-striped" *ngIf="null != virement.id">
+	<thead>
+		<tr>
+			<th>Débiteur</th>
+			<th>Nouveau Solde</th>
+			<th>Créditeur</th>
+			<th>Nouveau Solde</th>
+			<th>Montant viré</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>{{virement.clientDebiteur.nom}} {{virement.clientDebiteur.prenom}}
+			</td>
+			<td>{{virement.depart.solde}}</td>
+			<td>{{virement.clientCrediteur.nom}} {{virement.clientCrediteur.prenom}}
+			</td>
+			<td>{{virement.cible.solde}}</td>
+			<td>{{virement.montant}}</td>
+		</tr>
+	</tbody>
+</table>

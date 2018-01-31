@@ -11,9 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.formation.proxibanque.service.ConstantsConfig;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.formation.proxibanque.ConstantsConfig;
 
 /**
  * Entity Client

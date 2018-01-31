@@ -30,7 +30,9 @@ export class LoginComponent implements OnInit {
 
   auth() {
       this.authenticationService.auth(this.model.login, this.model.password)
-          .subscribe(data => this.router.navigate([this.returnUrl]),
+          .subscribe(() => this.authenticationService.authAs(this.model.login)
+            .subscribe(() => this.router.navigate([this.returnUrl]), 
+                        error => this.alertService.error(error.error)),
                     error => this.alertService.error(error.error));
   }
 

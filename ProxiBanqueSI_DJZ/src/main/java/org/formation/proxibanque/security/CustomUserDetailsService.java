@@ -1,10 +1,17 @@
 package org.formation.proxibanque.security;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.formation.proxibanque.dao.IDaoEmployee;
 import org.formation.proxibanque.entity.Employee;
+import org.formation.proxibanque.entity.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,10 +44,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 			LOGGER.error("L'utilisateur non trouve");
 			throw new UsernameNotFoundException("L'utilisateur non trouve par login " + login);
 		}
-		
-		user.getRoles().size();
+				
+		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+
+		// Build user's authorities
+		for (UserRole userRole : user.getRoles()) {
+			setAuths.add(new SimpleGrantedAuthority(userRole.getName()));
+		}
 		
 		LOGGER.info("Utilisateur trouve de DB ", user.getNom() + " " + user.getPrenom());
-        return new CustomUserDetails(user);
+        return new User(user.getLogin(), user.getPassword(), setAuths);
     }
 }

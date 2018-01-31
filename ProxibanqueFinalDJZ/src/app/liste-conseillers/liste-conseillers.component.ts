@@ -23,7 +23,7 @@ export class ListeConseillersComponent implements OnInit {
     private router: Router) { }
 
   loginAsConeiller(conseiller) {
-    this.authenticationService.auth(conseiller.login, conseiller.password)
+    this.authenticationService.authAs(conseiller.login)
           .subscribe(data => this.router.navigate(['/home']),
                     error => this.alertService.error(error.error));
   }

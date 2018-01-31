@@ -13,9 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,39 +43,26 @@ public class ConseillerRestController implements IConseillerRestController {
 		super();
 	}
 	
-	
 	@Autowired
     private IDaoEmployee daoEmployee;
+
 	
-	@Autowired
-    private PasswordEncoder passwordEncoder;
-	
-	@PostMapping("/auth")
-	public ResponseEntity<Employee> login(@Valid @RequestBody Employee user) throws DaoException {
+	@GetMapping("/auth")
+	public ResponseEntity<Employee> getEmployeeByLogin(@PathVariable(value = "login") String login) throws DaoException {
 		
-		LOGGER.info("Utilisateur : " + user.getLogin() + " essaye de logger " + user.getPassword() + "\n"
-				+ passwordEncoder.encode(user.getPassword()) ) ;
-		
-		Employee foundUser = daoEmployee.findEmployeeByLogin(user.getLogin());
+				
+		Employee foundUser = daoEmployee.findEmployeeByLogin(login);
 		if ( null != foundUser ) {
 			
-			LOGGER.info("Utilisateur trouve : " + foundUser.getLogin() + " " + foundUser.getPassword());
+			LOGGER.info("Login reussi : " + foundUser.getNom() + " " + foundUser.getPrenom());
 			
-			if ( passwordEncoder.matches( user.getPassword(), foundUser.getPassword() ) 
-					|| foundUser.getPassword().equals(user.getPassword()) ) {
-				foundUser.setToken("Fake token");
-				
-				LOGGER.info("Logger reussi : " + foundUser.getNom() + " " + foundUser.getPrenom());
-				
-				return ResponseEntity.ok(foundUser);
-			} else
-				throw new DaoException("Mot de passe incorrect");		
+			return ResponseEntity.ok(foundUser);
 			
 		} else {
 			throw new DaoException("Client avec login non trouve");
 		}
 	}
-	
+		
 	@Override
 	public ResponseEntity<Client> chercherClient(@PathVariable(value = "id") Long clientId) throws DaoException {
 		try {

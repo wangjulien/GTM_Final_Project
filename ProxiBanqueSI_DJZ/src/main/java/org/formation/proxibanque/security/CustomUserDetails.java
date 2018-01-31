@@ -11,6 +11,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 /**
  * Classe implement interface UserDetail (Spring Security) et encapsule l'utilisateur logge (Employee)
@@ -22,24 +24,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class CustomUserDetails implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
+		
+	private String username;
+	private String password;
+	
+	private Set<GrantedAuthority> setAuths;
+	
+	public CustomUserDetails() {
+		super();
+	}
 
-	private final Employee user;
-
-	public CustomUserDetails(Employee user) {
-		this.user = user;
+	public CustomUserDetails(String username, String password, Set<GrantedAuthority> setAuths) {
+		this.username = username;
+		this.password = password;
+		this.setAuths = setAuths;		
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
-		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
-
-		// Build user's authorities
-		for (UserRole userRole : user.getRoles()) {
-			setAuths.add(new SimpleGrantedAuthority(userRole.getName()));
-		}
-
-		return new ArrayList<GrantedAuthority>(setAuths);
+		return setAuths;
 	}
 
 	@Override
@@ -64,15 +67,11 @@ public class CustomUserDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return user.getLogin();
+		return username;
 	}
 
 	@Override
 	public String getPassword() {
-		return user.getPassword();
-	}
-
-	public Employee getUser() {
-		return user;
+		return password;
 	}
 }

@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map'
 import * as CONST from '../constants';
 import { Employee } from '../model/employee';
 import { error } from 'util';
+import { HttpResponse } from 'selenium-webdriver/http';
 
 @Injectable()
 export class AuthenticationService {
@@ -29,16 +30,10 @@ export class AuthenticationService {
 
         const jsonBody: any = { username: login, password: password };
 
-        return this.http.post<any>('http://localhost:8080/login', jsonBody)
-            .map((response: Response) => {
-                console.log(JSON.stringify(response));
-                localStorage.setItem('token', response.headers.get('Authorization'));
-                /* if (user && user.token) {
-                    console.log(JSON.stringify(user));
-                    localStorage.setItem('userToken', JSON.stringify(user));
-                }
-                console.log(JSON.stringify(user));
-                return user; */
+        return this.http.post('http://localhost:8080/login', jsonBody, {observe: 'response'})
+            .map(resp => {
+                console.log(resp.headers.get('Authorization'));
+                localStorage.setItem('userToken', resp.headers.get('Authorization'));
             });
     }
 

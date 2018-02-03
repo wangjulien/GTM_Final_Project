@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.formation</groupId>
-	<artifactId>ProxiBanqueSI_DJZ</artifactId>
+	<artifactId>ProxiBanqueSI_Final</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>ProxiBanqueSI_DJZ</name>
+	<name>ProxiBanqueSI_Final</name>
 	<description>Proxi Banque with Spring Boot</description>
 
 	<parent>

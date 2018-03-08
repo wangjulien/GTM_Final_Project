@@ -1,4 +1,4 @@
-package org.formation.proxibanque.rest;
+package org.formation.proxibanque.aop;
 
 import org.formation.proxibanque.dao.DaoException;
 import org.slf4j.Logger;

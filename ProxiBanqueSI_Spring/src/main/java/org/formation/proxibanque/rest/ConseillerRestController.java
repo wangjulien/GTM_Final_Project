@@ -47,7 +47,7 @@ public class ConseillerRestController implements IConseillerRestController {
     private IDaoEmployee daoEmployee;
 
 	
-	@GetMapping("/auth")
+	@Override
 	public ResponseEntity<Employee> getEmployeeByLogin(@PathVariable(value = "login") String login) throws DaoException {
 		
 				

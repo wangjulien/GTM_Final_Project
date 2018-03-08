@@ -7,6 +7,7 @@ import * as CONST from '../constants';
 import { Employee } from '../model/employee';
 import { error } from 'util';
 import { HttpResponse } from 'selenium-webdriver/http';
+import { TokenStorage } from './token.storage';
 
 @Injectable()
 export class AuthenticationService {
@@ -19,7 +20,8 @@ export class AuthenticationService {
         return this.loggedIn.asObservable();
     }
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+                private token: TokenStorage) {
         if (localStorage.getItem('currentUser')) {
             this.loggedIn.next(true);
         }
@@ -28,16 +30,14 @@ export class AuthenticationService {
     auth(login: string, password: string) {
         console.log(`login service ${login} ${password}`);
 
-        const jsonBody: any = { username: login, password: password };
+        const credentials : any = { username: login, password: password };
 
-        return this.http.post('http://localhost:8080/login', jsonBody, {observe: 'response'})
-            .map(resp => {
-                console.log(resp.headers.get('Authorization'));
-                localStorage.setItem('userToken', resp.headers.get('Authorization'));
-            });
+        return this.http.post('http://localhost:8080/login', credentials, {observe: 'response'})
+            .map(resp => {console.log(resp.headers.get('Authorization'));
+                this.token.saveToken(resp.headers.get('Authorization'))});
     }
 
-    authAs(login: string){
+    authAs(login: string) {
         return this.http.get<Employee>(this.auth_url + '/' + login).map(employee => {
             localStorage.setItem('currentUser', JSON.stringify(employee));
 
@@ -48,7 +48,7 @@ export class AuthenticationService {
     }
 
     logout() {
-        this.loggedIn.next(false);
         localStorage.removeItem('currentUser');
+        this.loggedIn.next(false);
     }
 }

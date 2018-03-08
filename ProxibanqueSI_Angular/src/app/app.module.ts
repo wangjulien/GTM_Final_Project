@@ -26,6 +26,7 @@ import { JwtInterceptor } from './service/jwt.interceptor';
 import { ConseillerClientService } from './service/conseiller-client.service';
 import { GerantConseillerService } from './service/gerant-conseiller.service';
 import { VirementService } from './service/virement.service';
+import { TokenStorage } from './service/token.storage';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { VirementService } from './service/virement.service';
         provide: HTTP_INTERCEPTORS,
         useClass: JwtInterceptor,
         multi: true
-    }
+    },
+    TokenStorage
   ],
   bootstrap: [AppComponent]
 })

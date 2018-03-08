@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.formation.proxibanque.dao.DaoException;
 import org.formation.proxibanque.entity.Client;
+import org.formation.proxibanque.entity.Employee;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/proxi_banque")
 @PreAuthorize("hasRole('ROLE_CONSEILLER') or hasRole('ROLE_GERANT')")
 public interface IConseillerRestController {
+	
+	@GetMapping("/auth/{login}")
+	public ResponseEntity<Employee> getEmployeeByLogin(@PathVariable(value = "login") String login) throws DaoException;
 	
 	@GetMapping("/clients/{id}")
 	public ResponseEntity<Client> chercherClient(@PathVariable(value = "id") Long clientId) throws DaoException;

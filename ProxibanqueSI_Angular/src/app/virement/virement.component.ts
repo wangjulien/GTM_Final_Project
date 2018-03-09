@@ -82,13 +82,13 @@ export class VirementComponent implements OnInit {
   onSubmit() {
 
     if (this.virement.montant <= 0) {
-      confirm("Le montant à virer doit être positif");
+      confirm('Le montant à virer doit être positif');
       return false;
     } else {
 
       console.log('Effectuer un virement : \n' + JSON.stringify(this.virement));
       this.virementService.doVirement(this.virement)
-        .subscribe(data => {this.virement = data; this.alertService.success('Virement réussi');},
+        .subscribe(data => {this.virement = data; this.alertService.success('Virement réussi'); },
         error => this.alertService.error(error.error));
     }
   }

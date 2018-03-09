@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs';
-import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/map';
 import * as CONST from '../constants';
 import { Employee } from '../model/employee';
 import { error } from 'util';
@@ -30,11 +30,10 @@ export class AuthenticationService {
     auth(login: string, password: string) {
         console.log(`login service ${login} ${password}`);
 
-        const credentials : any = { username: login, password: password };
+        const credentials: any = { username: login, password: password };
 
-        return this.http.post('http://localhost:8080/login', credentials, {observe: 'response'})
-            .map(resp => {console.log(resp.headers.get('Authorization'));
-                this.token.saveToken(resp.headers.get('Authorization'))});
+        return this.http.post<any>('http://localhost:8080/login', credentials, {observe: 'response'})
+            .map( resp => this.token.saveToken(resp.headers.get('Authorization')) );
     }
 
     authAs(login: string) {
@@ -49,6 +48,7 @@ export class AuthenticationService {
 
     logout() {
         localStorage.removeItem('currentUser');
+        this.token.signOut();
         this.loggedIn.next(false);
     }
 }

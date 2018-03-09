@@ -36,14 +36,14 @@ export class UpdateclientComponent implements OnInit {
       console.log('Client à ajouter : ' + JSON.stringify(this.actualClient));
         
       this.conseillerCLientService.addClient(this.actualClient)
-        .subscribe(data => { this.actualClient = data; this.alertService.success('Nouveau client ajouté');},
+        .subscribe(data => { this.actualClient = data; this.alertService.success('Nouveau client ajouté'); },
                     error => this.alertService.error(error.error));
         
     } else {
       console.log('Client à modifier : ' + JSON.stringify(this.actualClient));
   
       this.conseillerCLientService.updateClient(this.actualClient)
-        .subscribe(data => { this.actualClient = data; this.alertService.success('Enregistrement réussi');},
+        .subscribe(data => { this.actualClient = data; this.alertService.success('Enregistrement réussi'); },
                     error => this.alertService.error(error.error));
     }
   }
@@ -51,7 +51,7 @@ export class UpdateclientComponent implements OnInit {
   ngOnInit() {
 
     this.route.paramMap.subscribe(params => {
-      let id = params.get('id');
+      const id = params.get('id');
       if (null != id) {
         this.conseillerCLientService.getClient(id)
           .subscribe(data => this.actualClient = data, 

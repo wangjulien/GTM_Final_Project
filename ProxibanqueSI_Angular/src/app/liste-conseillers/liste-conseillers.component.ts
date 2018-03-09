@@ -36,7 +36,7 @@ export class ListeConseillersComponent implements OnInit {
   }
 
   goToDetails(conseiller) {
-    this.router.navigate(['/update-conseiller', conseiller.id])
+    this.router.navigate(['/update-conseiller', conseiller.id]);
 
     return false;
   }
@@ -44,9 +44,9 @@ export class ListeConseillersComponent implements OnInit {
   deleteConseiller(conseiller: Conseiller) {
     console.log('Conseiller à supprimer : ' + JSON.stringify(conseiller));
 
-    if (confirm("Supprimer le conseiller " + conseiller.nom + " " + conseiller.prenom + " ?")) {
+    if (confirm('Supprimer le conseiller ' + conseiller.nom + ' ' + conseiller.prenom + ' ?')) {
       this.gerantConseillerService.deleteConseiller(conseiller.id)
-        .subscribe(() => { this.alertService.success('Suppression du conseiller réussi') },
+        .subscribe(() => { this.alertService.success('Suppression du conseiller réussi'); },
         error => this.alertService.error(error.error));
     }
     return false;

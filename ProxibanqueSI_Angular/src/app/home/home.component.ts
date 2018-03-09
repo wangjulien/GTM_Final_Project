@@ -8,7 +8,7 @@ import { Employee } from '../model/employee';
 })
 export class HomeComponent implements OnInit {
 
-  currentUser = new Employee();;
+  currentUser = new Employee();
   
   constructor() { }
 

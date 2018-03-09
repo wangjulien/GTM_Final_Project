@@ -5,7 +5,7 @@ import { Conseiller } from './conseiller';
 
 export class Client {
   id: string;
-  refClient: string = '';
+  refClient = '';
   nom: string;
   prenom: string;
   compteCourant: CompteCourant;

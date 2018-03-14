@@ -1,7 +1,7 @@
 'use strict';
 
-export const HOST = 'http://192.168.1.101';
-export const PORT = '8080';
+export const HOST = 'https://localhost';
+export const PORT = '8443';
 export const APP_URL = '/proxi_banque';
 
 export const REST_HOST = HOST + ':' + PORT + APP_URL;

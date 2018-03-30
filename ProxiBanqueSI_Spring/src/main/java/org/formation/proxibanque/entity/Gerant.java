@@ -23,9 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "gerant")
 public class Gerant extends Employee {
-	
-	public static final String ROLE_GERANT = "ROLE_GERANT";
-	
+		
 	@OneToOne
 	private Agence agence;
 
@@ -34,12 +32,12 @@ public class Gerant extends Employee {
 
 	public Gerant() {
 		super();
-		super.addRole(new UserRole(ROLE_GERANT));
+		super.addRole(Role.ROLE_GERANT);
 	}
 
 	public Gerant(String nom, String prenom, String refEmployee, Adresse adresse) {
 		super(nom, prenom, refEmployee, adresse);
-		super.addRole(new UserRole(ROLE_GERANT));
+		super.addRole(Role.ROLE_GERANT);
 	}
 
 	public Agence getAgence() {

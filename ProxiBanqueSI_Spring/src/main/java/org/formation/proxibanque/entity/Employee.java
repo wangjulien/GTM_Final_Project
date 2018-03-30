@@ -3,18 +3,19 @@ package org.formation.proxibanque.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -53,10 +54,11 @@ public abstract class Employee {
 	@Embedded
 	private Adresse adresse;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "employee_role", joinColumns = { @JoinColumn(name = "employee_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "role_id") })
-	private Set<UserRole> roles = new HashSet<>();
+	@ElementCollection(targetClass = Role.class)
+	@CollectionTable(name = "role", joinColumns = @JoinColumn(name = "employee_id"))
+	@Column(name = "roles", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Set<Role> roles = new HashSet<>();
 
 	@Column(unique = true)
 	private String login;
@@ -79,8 +81,7 @@ public abstract class Employee {
 		this.password = "test";
 	}
 
-	public void addRole(UserRole role) {
-		role.addUser(this);
+	public void addRole(Role role) {
 		this.roles.add(role);
 	}
 
@@ -124,11 +125,11 @@ public abstract class Employee {
 		this.adresse = adresse;
 	}
 
-	public Set<UserRole> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<UserRole> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 

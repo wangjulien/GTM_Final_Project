@@ -7,7 +7,6 @@ import org.formation.proxibanque.entity.Client;
 import org.formation.proxibanque.entity.Compte;
 import org.formation.proxibanque.entity.CompteCourant;
 import org.formation.proxibanque.entity.Virement;
-import org.formation.proxibanque.rest.VirementRestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

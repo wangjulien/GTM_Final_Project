@@ -25,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "conseiller")
 public class Conseiller extends Employee {
 
-	public static final String ROLE_CONSEILLER = "ROLE_CONSEILLER";
-	
 	@ManyToOne
 	private Gerant gerant;
 
@@ -35,12 +33,12 @@ public class Conseiller extends Employee {
 
 	public Conseiller() {
 		super();
-		super.addRole(new UserRole(ROLE_CONSEILLER));
+		super.addRole(Role.ROLE_CONSEILLER);
 	}
 
 	public Conseiller(String nom, String prenom, String refEmployee, Adresse adresse) {
 		super(nom, prenom, refEmployee, adresse);
-		super.addRole(new UserRole(ROLE_CONSEILLER));
+		super.addRole(Role.ROLE_CONSEILLER);
 	}
 
 	public void addClient(Client c) {

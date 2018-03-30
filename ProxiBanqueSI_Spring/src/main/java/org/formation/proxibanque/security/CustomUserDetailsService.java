@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.formation.proxibanque.dao.IDaoEmployee;
 import org.formation.proxibanque.entity.Employee;
-import org.formation.proxibanque.entity.UserRole;
+import org.formation.proxibanque.entity.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +48,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 
 		// Build user's authorities
-		for (UserRole userRole : user.getRoles()) {
-			setAuths.add(new SimpleGrantedAuthority(userRole.getName()));
+		for (Role role : user.getRoles()) {
+			setAuths.add(new SimpleGrantedAuthority(role.toString()));
 		}
 		
 		LOGGER.info("Utilisateur trouve de DB ", user.getNom() + " " + user.getPrenom());

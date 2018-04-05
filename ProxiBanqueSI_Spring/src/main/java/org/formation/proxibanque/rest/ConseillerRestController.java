@@ -1,6 +1,7 @@
 package org.formation.proxibanque.rest;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ConseillerRestController implements IConseillerRestController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConseillerRestController.class);
 
 	@Autowired
@@ -41,43 +42,43 @@ public class ConseillerRestController implements IConseillerRestController {
 	public ConseillerRestController() {
 		super();
 	}
-	
-	@Autowired
-    private IDaoEmployee daoEmployee;
 
-	
+	@Autowired
+	private IDaoEmployee daoEmployee;
+
 	@Override
-	public ResponseEntity<Employee> getEmployeeByLogin(@PathVariable(value = "login") String login) throws DaoException {
-		
-				
+	public ResponseEntity<Employee> getEmployeeByLogin(@PathVariable(value = "login") String login)
+			throws DaoException {
+
 		Employee foundUser = daoEmployee.findEmployeeByLogin(login);
-		if ( null != foundUser ) {
-			
+		if (null != foundUser) {
+
 			LOGGER.info("Login reussi : " + foundUser.getNom() + " " + foundUser.getPrenom());
-			
+
 			return ResponseEntity.ok(foundUser);
-			
+
 		} else {
 			throw new DaoException("Client avec login non trouve");
 		}
 	}
-		
+
 	@Override
 	public ResponseEntity<Client> chercherClient(@PathVariable(value = "id") Long clientId) throws DaoException {
 		try {
 			LOGGER.info("Chercher client id : " + clientId);
-			
-			Client foundClient = conseillerService.chercherClient(clientId);
-			if (null == foundClient) {
+
+			Optional<Client> optionClient = conseillerService.chercherClient(clientId);
+			if (!optionClient.isPresent()) {
 				LOGGER.error("Client avec id : " + clientId + " non trouve");
 				throw new DaoException("Client avec id : " + clientId + " non trouve");
 			}
-			
+
+			Client foundClient = optionClient.get();
 			LOGGER.info("Client trouve : " + foundClient.getNom() + " " + foundClient.getPrenom());
-			
+
 			return ResponseEntity.ok(foundClient);
 
-		} catch (DaoException e) {			
+		} catch (DaoException e) {
 			throw e;
 		}
 	}
@@ -93,13 +94,13 @@ public class ConseillerRestController implements IConseillerRestController {
 	public ResponseEntity<Client> ajouterClient(@Valid @RequestBody Client client) throws DaoException {
 		try {
 			LOGGER.info("Client a ajoute : Id=" + client.getId() + " " + client.getNom() + " " + client.getPrenom());
-			
+
 			conseillerService.ajouterClient(client);
-			
+
 			LOGGER.info("Client ajoute : Id=" + client.getId() + " " + client.getNom() + " " + client.getPrenom());
-			
+
 			return ResponseEntity.ok(client);
-			
+
 		} catch (DaoException e) {
 			throw e;
 		}
@@ -116,11 +117,11 @@ public class ConseillerRestController implements IConseillerRestController {
 	public ResponseEntity<Client> modifierClient(@Valid @RequestBody Client client) throws DaoException {
 		try {
 			LOGGER.info("Client a modifie : Id=" + client.getId() + " " + client.getNom() + " " + client.getPrenom());
-						
+
 			conseillerService.modifierClient(client);
-			
+
 			LOGGER.info("Client modifie : Id=" + client.getId() + " " + client.getNom() + " " + client.getPrenom());
-			
+
 			return ResponseEntity.ok(client);
 		} catch (DaoException e) {
 			throw e;
@@ -137,17 +138,19 @@ public class ConseillerRestController implements IConseillerRestController {
 	 */
 	public ResponseEntity<Client> supprimerClient(@PathVariable(value = "id") Long clientId) throws DaoException {
 		try {
-			
-			Client foundClient = conseillerService.chercherClient(clientId);
-			if (null == foundClient) {
+
+			Optional<Client> optionClient = conseillerService.chercherClient(clientId);
+			if (!optionClient.isPresent()) {
 				LOGGER.error("Client avec id : " + clientId + " non trouve");
 				throw new DaoException("Client avec id : " + clientId + " non trouve");
 			}
-			
+
+			Client foundClient = optionClient.get();
 			conseillerService.supprimerClient(foundClient);
-			
-			LOGGER.info("Client supprime : Id=" + foundClient.getId() + " " + foundClient.getNom() + " " + foundClient.getPrenom());
-			
+
+			LOGGER.info("Client supprime : Id=" + foundClient.getId() + " " + foundClient.getNom() + " "
+					+ foundClient.getPrenom());
+
 			return ResponseEntity.ok(foundClient);
 		} catch (DaoException e) {
 			throw e;
@@ -164,9 +167,9 @@ public class ConseillerRestController implements IConseillerRestController {
 	public ResponseEntity<List<Client>> listerTousClients() throws DaoException {
 		try {
 			List<Client> clis = conseillerService.listerTousClients();
-			
+
 			LOGGER.info("Clients trouves : nombre=" + clis.size());
-			
+
 			return ResponseEntity.ok(clis);
 		} catch (DaoException e) {
 			throw e;
@@ -180,12 +183,13 @@ public class ConseillerRestController implements IConseillerRestController {
 	 * @throws DaoException
 	 *             DaoException
 	 */
-	public ResponseEntity<List<Client>> listerClientsDeConseiller(@PathVariable(value = "id") Long idConseiller) throws DaoException {
+	public ResponseEntity<List<Client>> listerClientsDeConseiller(@PathVariable(value = "id") Long idConseiller)
+			throws DaoException {
 		try {
 			List<Client> clis = conseillerService.listerClientsDeConseiller(idConseiller);
-			
+
 			LOGGER.info("Clients du conseiller id=" + idConseiller + " trouves : nombre=" + clis.size());
-			
+
 			return ResponseEntity.ok(clis);
 		} catch (DaoException e) {
 			throw e;

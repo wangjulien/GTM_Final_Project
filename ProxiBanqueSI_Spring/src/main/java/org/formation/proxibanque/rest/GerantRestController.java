@@ -1,6 +1,7 @@
 package org.formation.proxibanque.rest;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -30,23 +31,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GerantRestController implements IGerantRestController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(GerantRestController.class);
-	
+
 	@Autowired
 	private IGerantService gerantService;
-	
+
 	public GerantRestController() {
 		super();
 	}
 
 	@Override
-	public ResponseEntity<Conseiller> chercherConseiller(@PathVariable(value = "id") Long idConseiller) throws DaoException {
+	public ResponseEntity<Conseiller> chercherConseiller(@PathVariable(value = "id") Long idConseiller)
+			throws DaoException {
 		try {
-			Conseiller foundConseiller = gerantService.chercherConseiller(idConseiller);
-			if (null == foundConseiller)
+			Optional<Conseiller> optionConseiller = gerantService.chercherConseiller(idConseiller);
+			if (!optionConseiller.isPresent())
 				throw new DaoException("Conseiller avec id : " + idConseiller + " non trouve");
-			
+
+			Conseiller foundConseiller = optionConseiller.get();
 			return ResponseEntity.ok(foundConseiller);
 
 		} catch (DaoException e) {
@@ -58,19 +61,20 @@ public class GerantRestController implements IGerantRestController {
 	public ResponseEntity<Conseiller> ajouterConseiller(@Valid @RequestBody Conseiller conseiller) throws DaoException {
 		try {
 			gerantService.ajouterConseiller(conseiller);
-			
+
 			return ResponseEntity.ok(conseiller);
-			
+
 		} catch (DaoException e) {
 			throw e;
 		}
 	}
 
 	@Override
-	public ResponseEntity<Conseiller> modifierConseiller(@Valid @RequestBody Conseiller conseiller) throws DaoException {
+	public ResponseEntity<Conseiller> modifierConseiller(@Valid @RequestBody Conseiller conseiller)
+			throws DaoException {
 		try {
 			gerantService.modifierConseiller(conseiller);
-			
+
 			return ResponseEntity.ok(conseiller);
 		} catch (Exception e) {
 			throw e;
@@ -78,10 +82,11 @@ public class GerantRestController implements IGerantRestController {
 	}
 
 	@Override
-	public ResponseEntity<Conseiller> supprimerConseiller(@Valid @RequestBody Conseiller conseiller) throws DaoException {
+	public ResponseEntity<Conseiller> supprimerConseiller(@Valid @RequestBody Conseiller conseiller)
+			throws DaoException {
 		try {
 			gerantService.supprimerConseiller(conseiller);
-			
+
 			return ResponseEntity.ok(conseiller);
 		} catch (DaoException e) {
 			throw e;
@@ -89,16 +94,17 @@ public class GerantRestController implements IGerantRestController {
 	}
 
 	@Override
-	public ResponseEntity<List<Conseiller>> listerConseillersDuGerant(@PathVariable(value = "id") Long idGerent) throws DaoException {
+	public ResponseEntity<List<Conseiller>> listerConseillersDuGerant(@PathVariable(value = "id") Long idGerent)
+			throws DaoException {
 		try {
-			
-			List<Conseiller> cons = gerantService.listerConseillersDuGerant(idGerent); 
+
+			List<Conseiller> cons = gerantService.listerConseillersDuGerant(idGerent);
 			LOGGER.info("Clients trouves : nombre=" + cons.size());
-			
+
 			return ResponseEntity.ok(cons);
 		} catch (DaoException e) {
 			throw e;
-		}    
+		}
 	}
 
 	/**
@@ -115,22 +121,24 @@ public class GerantRestController implements IGerantRestController {
 
 		boolean hasDebiteurs = false;
 
-//		for (Conseiller con : a.getGerant().getConseillerList()) {
-//			for (Client clt : con.getClientsList()) {
-//
-//				if (clt instanceof ClientParticulier
-//						&& clt.getCompteCourant().getSolde() < CompteCourant.MAXI_DECOUVERT_PARTICULIER) {
-//					listDebiteurs.add(clt);
-//					hasDebiteurs = true;
-//				}
-//				if (clt instanceof ClientEntreprise
-//						&& clt.getCompteCourant().getSolde() < CompteCourant.MAXI_DECOUVERT_ENTREPRISE) {
-//					listDebiteurs.add(clt);
-//					hasDebiteurs = true;
-//				}
-//
-//			}
-//		}
+		// for (Conseiller con : a.getGerant().getConseillerList()) {
+		// for (Client clt : con.getClientsList()) {
+		//
+		// if (clt instanceof ClientParticulier
+		// && clt.getCompteCourant().getSolde() <
+		// CompteCourant.MAXI_DECOUVERT_PARTICULIER) {
+		// listDebiteurs.add(clt);
+		// hasDebiteurs = true;
+		// }
+		// if (clt instanceof ClientEntreprise
+		// && clt.getCompteCourant().getSolde() <
+		// CompteCourant.MAXI_DECOUVERT_ENTREPRISE) {
+		// listDebiteurs.add(clt);
+		// hasDebiteurs = true;
+		// }
+		//
+		// }
+		// }
 
 		return !hasDebiteurs;
 	}

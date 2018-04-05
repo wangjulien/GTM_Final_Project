@@ -1,6 +1,7 @@
 package org.formation.proxibanque.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.formation.proxibanque.ConstantsConfig;
 import org.formation.proxibanque.dao.DaoException;
@@ -38,8 +39,8 @@ public class GerantService implements IGerantService {
 	}
 
 	@Override
-	public Conseiller chercherConseiller(@PathVariable(value = "id") Long idConseiller) throws DaoException {
-		return daoConseiller.findOne(idConseiller);
+	public Optional<Conseiller> chercherConseiller(@PathVariable(value = "id") Long idConseiller) throws DaoException {
+		return daoConseiller.findById(idConseiller);
 	}
 
 	@Override

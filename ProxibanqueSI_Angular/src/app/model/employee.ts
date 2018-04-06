@@ -1,5 +1,4 @@
 import { Adresse } from './adresse';
-import { UserRole } from './user-role';
 
 export class Employee {
   id: string;
@@ -10,7 +9,7 @@ export class Employee {
   password: string;
   adresse: Adresse;
 
-  roles: UserRole[];
+  roles: string[];
 
   constructor() {
     this.adresse = new Adresse();

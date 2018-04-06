@@ -23,8 +23,7 @@ export class HeaderComponent implements OnInit {
     this.isLoggedIn$.subscribe(() => {
       if (null != localStorage.getItem('currentUser')) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-        if (this.currentUser.roles[0].name === 'ROLE_GERANT') {
+        if (this.currentUser.roles[0] === 'ROLE_GERANT') {
           this.isGerant = true;
         } else {
           this.isGerant = false;

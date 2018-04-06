@@ -41,8 +41,8 @@ export class AuthenticationService {
         return this.http.get<Employee>(this.authAs_url + '/' + login).map(employee => {
             localStorage.setItem('currentUser', JSON.stringify(employee));
 
+            // console.log(JSON.stringify(employee));
             this.loggedIn.next(true);
-            console.log(JSON.stringify(employee));
             return employee;
         });
     }

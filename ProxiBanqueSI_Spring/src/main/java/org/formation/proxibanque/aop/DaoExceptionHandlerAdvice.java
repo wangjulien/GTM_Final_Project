@@ -13,12 +13,14 @@ public class DaoExceptionHandlerAdvice {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DaoExceptionHandlerAdvice.class);
 	
 	@ExceptionHandler(DaoException.class)
-    public ResponseEntity handleException(DaoException e) {
+    public ResponseEntity<Object> handleException(DaoException e) {
 		
 		LOGGER.error("Exception : " + e.getMessage());
 		
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(e.getMessage());
-    }    
+    }
+	
+	
 }

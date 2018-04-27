@@ -27,7 +27,8 @@ public class ProxiBanqueBootApplication {
 				registry.addMapping("/**")
 						.allowedOrigins(HTTP + corsPermitHost + DEV_PORT, 
 										HTTPS + corsPermitHost, 
-										HTTPS + corsPermitHost + HTTPS_PORT)
+										HTTPS + corsPermitHost + HTTPS_PORT,
+										"*")
 						.allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD");
 			}
 		};
